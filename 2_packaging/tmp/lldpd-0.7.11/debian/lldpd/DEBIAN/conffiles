@@ -1,0 +1,5 @@
+/etc/lldpd.d/README.conf
+/etc/init.d/lldpd
+/etc/default/lldpd
+/etc/bash_completion.d/lldpcli.bash-completion
+/etc/init/lldpd.conf

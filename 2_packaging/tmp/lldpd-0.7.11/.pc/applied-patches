@@ -1,0 +1,4 @@
+0001-systemd-fix-systemd-unit-file.patch
+0001-lib-fix-pkgconfig-file-substitutions.patch
+0001-lldp-fix-a-buffer-overflow-when-handling-management-.patch
+0002-protocols-don-t-use-assert-on-paths-that-can-be-reac.patch

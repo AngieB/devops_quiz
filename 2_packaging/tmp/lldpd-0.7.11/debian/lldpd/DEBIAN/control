@@ -1,0 +1,23 @@
+Package: lldpd
+Version: 0.7.11-2+deb8u2
+Architecture: amd64
+Maintainer: Vincent Bernat <bernat@debian.org>
+Installed-Size: 487
+Depends: libbsd0 (>= 0.6.0), libc6 (>= 2.15), libevent-2.0-5 (>= 2.0.10-stable), libreadline6 (>= 6.0), libsnmp30 (>= 5.7.2~dfsg), libxml2 (>= 2.7.4), sysv-rc (>= 2.88dsf-24) | file-rc (>= 0.8.16), adduser
+Suggests: snmpd
+Section: net
+Priority: optional
+Homepage: http://vincentbernat.github.com/lldpd/
+Description: implementation of IEEE 802.1ab (LLDP)
+ LLDP is an industry standard protocol designed to supplant
+ proprietary Link-Layer protocols such as Extreme's EDP (Extreme
+ Discovery Protocol) and CDP (Cisco Discovery Protocol). The goal of
+ LLDP is to provide an inter-vendor compatible mechanism to deliver
+ Link-Layer notifications to adjacent network devices.
+ .
+ This implementation provides LLDP sending and reception, supports
+ VLAN and includes an SNMP subagent that can interface to an SNMP
+ agent through AgentX protocol.
+ .
+ This daemon is also able to deal with CDP, SONMP, FDP and EDP
+ protocol. It also handles LLDP-MED extension.

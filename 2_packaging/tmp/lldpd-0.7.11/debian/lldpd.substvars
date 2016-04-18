@@ -1,0 +1,2 @@
+misc:Depends=sysv-rc (>= 2.88dsf-24) | file-rc (>= 0.8.16)
+shlibs:Depends=libbsd0 (>= 0.6.0), libc6 (>= 2.15), libevent-2.0-5 (>= 2.0.10-stable), libreadline6 (>= 6.0), libsnmp30 (>= 5.7.2~dfsg), libxml2 (>= 2.7.4), lldpd (>= 0.7.3)

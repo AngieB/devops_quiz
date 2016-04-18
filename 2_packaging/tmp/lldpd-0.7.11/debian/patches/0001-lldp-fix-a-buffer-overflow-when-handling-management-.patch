@@ -1,0 +1,36 @@
+From 805fbe5f18ef170c63aa2e529acf92c95d3b83b1 Mon Sep 17 00:00:00 2001
+From: Vincent Bernat <vincent@bernat.im>
+Date: Sun, 4 Oct 2015 01:50:38 +0200
+Subject: [PATCH 1/2] lldp: fix a buffer overflow when handling management
+ address TLV
+
+When a remote device was advertising a too large management address
+while still respecting TLV boundaries, lldpd would crash due to a buffer
+overflow. However, the buffer being a static one, this buffer overflow
+is not exploitable if hardening was not disabled. This bug exists since
+version 0.5.6.
+---
+ src/daemon/lldp.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/daemon/lldp.c b/src/daemon/lldp.c
+index ae01ccc5078a..cc3585623476 100644
+--- a/src/daemon/lldp.c
++++ b/src/daemon/lldp.c
+@@ -625,7 +625,12 @@ lldp_decode(struct lldpd *cfg, char *frame, int s,
+ 		case LLDP_TLV_MGMT_ADDR:
+ 			CHECK_TLV_SIZE(1, "Management address");
+ 			addr_str_length = PEEK_UINT8;
+-			CHECK_TLV_SIZE(addr_str_length, "Management address");
++			if (addr_str_length > sizeof(addr_str_buffer)) {
++				log_warnx("lldp", "too large management address on %s",
++				    hardware->h_ifname);
++				goto malformed;
++			}
++			CHECK_TLV_SIZE(1 + addr_str_length, "Management address");
+ 			PEEK_BYTES(addr_str_buffer, addr_str_length);
+ 			addr_length = addr_str_length - 1;
+ 			addr_family = addr_str_buffer[0];
+-- 
+2.6.2
+

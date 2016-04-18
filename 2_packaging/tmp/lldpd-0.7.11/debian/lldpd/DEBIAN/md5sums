@@ -1,0 +1,14 @@
+b0017f7dc581a8eecc1cc48e58573bf7  lib/systemd/system/lldpd.service
+7a7755adc2658c910033ff8bc731bd67  usr/lib/liblldpctl.so.4.3.0
+ba64ed20816977c3659c10eaab1b64a7  usr/sbin/lldpcli
+201284f5c6390eb611224ea4b1fd32d0  usr/sbin/lldpd
+17f316ce438a98307ae2908aed6bf3da  usr/share/doc/lldpd/NEWS.gz
+0aa6f448341e4c89b11de1f80b5a037f  usr/share/doc/lldpd/README.Debian
+8d6469f311729b87466cf185fad4f90a  usr/share/doc/lldpd/changelog.Debian.gz
+479950e2c103f17c3df20144efb5e775  usr/share/doc/lldpd/changelog.gz
+5bd0b4217eb4f02f9d9ecd17f2644233  usr/share/doc/lldpd/copyright
+39a20621445293736184f7006f3eecf7  usr/share/lintian/overrides/lldpd
+06118902d399d0526b901254992fdcb7  usr/share/man/man8/lldpcli.8.gz
+6af4a2950fbd6668cb2bd39b122d8fa7  usr/share/man/man8/lldpctl.8.gz
+b04cab5d77916346869e78f499ebd904  usr/share/man/man8/lldpd.8.gz
+0d3cb560daeaae764c1a700e952ec13a  usr/share/zsh/vendor-completions/_lldpcli

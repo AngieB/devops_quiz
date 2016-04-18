@@ -1,0 +1,8 @@
+53065366d2bbe9159c11c3b658a76f36  usr/include/lldp-const.h
+c254341654618ddd2ee2bd3a84602a6e  usr/include/lldpctl.h
+e92602cb970f937220c8737ccda77ac0  usr/lib/liblldpctl.a
+2c6a5a390049545e81f910ae2f66d24e  usr/lib/pkgconfig/lldpctl.pc
+17f316ce438a98307ae2908aed6bf3da  usr/share/doc/liblldpctl-dev/NEWS.gz
+8d6469f311729b87466cf185fad4f90a  usr/share/doc/liblldpctl-dev/changelog.Debian.gz
+479950e2c103f17c3df20144efb5e775  usr/share/doc/liblldpctl-dev/changelog.gz
+5bd0b4217eb4f02f9d9ecd17f2644233  usr/share/doc/liblldpctl-dev/copyright

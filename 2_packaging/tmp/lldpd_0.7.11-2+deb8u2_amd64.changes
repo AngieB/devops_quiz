@@ -1,0 +1,32 @@
+Format: 1.8
+Date: Mon, 18 Apr 2016 17:54:02 +0000
+Source: lldpd
+Binary: lldpd liblldpctl-dev
+Architecture: source amd64
+Version: 0.7.11-2+deb8u2
+Distribution: UNRELEASED
+Urgency: medium
+Maintainer: Vincent Bernat <bernat@debian.org>
+Changed-By: Ubuntu <ubuntu@ip-172-31-16-68.us-west-2.compute.internal>
+Description: 
+ liblldpctl-dev - implementation of IEEE 802.1ab (LLDP) - development files
+ lldpd      - implementation of IEEE 802.1ab (LLDP)
+Changes: 
+ lldpd (0.7.11-2+deb8u2) UNRELEASED; urgency=medium
+ .
+   * increment for quiz
+Checksums-Sha1: 
+ eeb9abdcc2f28e5202fef554a831a8d8831eadff 1201 lldpd_0.7.11-2+deb8u2.dsc
+ 1dde4fea9a85ce00c29a19b11b7b4c25d996d86b 11886 lldpd_0.7.11-2+deb8u2.debian.tar.gz
+ e28cd0c7c8543ac7612f627130cb8bfab4a0cd7e 164684 lldpd_0.7.11-2+deb8u2_amd64.deb
+ 654bf674a5661b2ade0aca33c836e07a4bf3f457 79194 liblldpctl-dev_0.7.11-2+deb8u2_amd64.deb
+Checksums-Sha256: 
+ 0ad83e80dc46e9c65068ed80cc64e1846e09938aad09bc84506c53c04b2ceabe 1201 lldpd_0.7.11-2+deb8u2.dsc
+ 7d36f84e28e012159f11b4967a37e7f24a9bdde6f6e25115e20d407f22465fc4 11886 lldpd_0.7.11-2+deb8u2.debian.tar.gz
+ e26aca6e2e56616b1f7db7dc9f4697fd25ec3349dc2b1b9d534ac5ba559817ad 164684 lldpd_0.7.11-2+deb8u2_amd64.deb
+ 311084ac589356c3f388e24c8f3cc3a4cc577ec7f5640e0b5e0487a6d24b0ea7 79194 liblldpctl-dev_0.7.11-2+deb8u2_amd64.deb
+Files: 
+ 8b9c3eea8e5fc0befefe51eb792cf30a 1201 net optional lldpd_0.7.11-2+deb8u2.dsc
+ 378b57d1b9660fcc7ef97bb0e5718c21 11886 net optional lldpd_0.7.11-2+deb8u2.debian.tar.gz
+ 6a35b2d825a67ef330882439bea137ec 164684 net optional lldpd_0.7.11-2+deb8u2_amd64.deb
+ 7cdec60cb939d53431a8c7346bf2e168 79194 libdevel optional liblldpctl-dev_0.7.11-2+deb8u2_amd64.deb

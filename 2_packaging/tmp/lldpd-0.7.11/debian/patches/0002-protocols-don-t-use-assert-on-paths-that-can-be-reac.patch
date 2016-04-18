@@ -1,0 +1,135 @@
+From 18d81c30e6bc2f2c6b6e591c10893b9cd6f227aa Mon Sep 17 00:00:00 2001
+From: Vincent Bernat <vincent@bernat.im>
+Date: Sun, 4 Oct 2015 02:24:29 +0200
+Subject: [PATCH 2/2] protocols: don't use assert on paths that can be reached
+
+Malformed packets should not make lldpd crash. Ensure we can handle them
+by not using assert() in this part.
+---
+ src/daemon/cdp.c   | 10 +++++++---
+ src/daemon/edp.c   |  1 -
+ src/daemon/lldp.c  | 14 ++++++++------
+ src/daemon/lldpd.c |  1 -
+ src/daemon/sonmp.c |  8 +++++---
+ 5 files changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/src/daemon/cdp.c b/src/daemon/cdp.c
+index 4974b00eecbf..c78d64b1f01c 100644
+--- a/src/daemon/cdp.c
++++ b/src/daemon/cdp.c
+@@ -25,7 +25,6 @@
+ #include <unistd.h>
+ #include <errno.h>
+ #include <arpa/inet.h>
+-#include <assert.h>
+ 
+ static int
+ cdp_send(struct lldpd *global,
+@@ -437,8 +436,13 @@ cdp_decode(struct lldpd *cfg, char *frame, int s,
+ 						mgmt = lldpd_alloc_mgmt(LLDPD_AF_IPV4, &addr, 
+ 									sizeof(struct in_addr), 0);
+ 						if (mgmt == NULL) {
+-							assert(errno == ENOMEM);
+-							log_warn("cdp", "unable to allocate memory for management address");
++							if (errno == ENOMEM)
++								log_warn("cdp",
++								    "unable to allocate memory for management address");
++							else
++								log_warn("cdp",
++								    "too large management address received on %s",
++								    hardware->h_ifname);
+ 							goto malformed;
+ 						}
+ 						TAILQ_INSERT_TAIL(&chassis->c_mgmt, mgmt, m_entries);
+diff --git a/src/daemon/edp.c b/src/daemon/edp.c
+index 106d9f6387bc..bf60e4d92363 100644
+--- a/src/daemon/edp.c
++++ b/src/daemon/edp.c
+@@ -25,7 +25,6 @@
+ #include <errno.h>
+ #include <arpa/inet.h>
+ #include <fnmatch.h>
+-#include <assert.h>
+ 
+ static int seq = 0;
+ 
+diff --git a/src/daemon/lldp.c b/src/daemon/lldp.c
+index cc3585623476..367655c983bd 100644
+--- a/src/daemon/lldp.c
++++ b/src/daemon/lldp.c
+@@ -20,7 +20,6 @@
+ 
+ #include <unistd.h>
+ #include <errno.h>
+-#include <assert.h>
+ #include <time.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+@@ -151,7 +150,7 @@ lldp_send(struct lldpd *global,
+ 	/* Management addresses */
+ 	TAILQ_FOREACH(mgmt, &chassis->c_mgmt, m_entries) {
+ 		proto = lldpd_af_to_lldp_proto(mgmt->m_family);
+-		assert(proto != LLDP_MGMT_ADDR_NONE);
++		if (proto == LLDP_MGMT_ADDR_NONE) continue;
+ 		if (!(
+ 			  POKE_START_LLDP_TLV(LLDP_TLV_MGMT_ADDR) &&
+ 			  /* Size of the address, including its type */
+@@ -648,10 +647,13 @@ lldp_decode(struct lldpd *cfg, char *frame, int s,
+ 				iface = 0;
+ 			mgmt = lldpd_alloc_mgmt(af, addr_ptr, addr_length, iface);
+ 			if (mgmt == NULL) {
+-				assert(errno == ENOMEM);
+-				log_warn("lldp", "unable to allocate memory "
+-							"for management address");
+-						goto malformed;
++				if (errno == ENOMEM)
++					log_warn("lldp", "unable to allocate memory "
++					    "for management address");
++				else
++					log_warn("lldp", "too large management address "
++					    "received on %s", hardware->h_ifname);
++				goto malformed;
+ 			}
+ 			TAILQ_INSERT_TAIL(&chassis->c_mgmt, mgmt, m_entries);
+ 			break;
+diff --git a/src/daemon/lldpd.c b/src/daemon/lldpd.c
+index 10c5ed791926..c659bfe69abd 100644
+--- a/src/daemon/lldpd.c
++++ b/src/daemon/lldpd.c
+@@ -195,7 +195,6 @@ lldpd_alloc_mgmt(int family, void *addrptr, size_t addrsize, u_int32_t iface)
+ 		return NULL;
+ 	}
+ 	mgmt->m_family = family;
+-	assert(addrsize <= LLDPD_MGMT_MAXADDRSIZE);
+ 	memcpy(&mgmt->m_addr, addrptr, addrsize);
+ 	mgmt->m_addrsize = addrsize;
+ 	mgmt->m_iface = iface;
+diff --git a/src/daemon/sonmp.c b/src/daemon/sonmp.c
+index 30930cb34093..b55d73b7a59b 100644
+--- a/src/daemon/sonmp.c
++++ b/src/daemon/sonmp.c
+@@ -24,7 +24,6 @@
+ #include <unistd.h>
+ #include <errno.h>
+ #include <arpa/inet.h>
+-#include <assert.h>
+ 
+ static struct sonmp_chassis sonmp_chassis_types[] = {
+ 	{1, "unknown (via SONMP)"},
+@@ -358,8 +357,11 @@ sonmp_decode(struct lldpd *cfg, char *frame, int s,
+ 	}
+ 	mgmt = lldpd_alloc_mgmt(LLDPD_AF_IPV4, &address, sizeof(struct in_addr), 0);
+ 	if (mgmt == NULL) {
+-		assert(errno == ENOMEM);
+-		log_warn("sonmp", "unable to allocate memory for management address");
++		if (errno == ENOMEM)
++			log_warn("sonmp", "unable to allocate memory for management address");
++		else
++			log_warn("sonmp", "too large management address received on %s",
++			    hardware->h_ifname);
+ 		goto malformed;
+ 	}
+ 	TAILQ_INSERT_TAIL(&chassis->c_mgmt, mgmt, m_entries);
+-- 
+2.6.2
+
